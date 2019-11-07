@@ -38,8 +38,13 @@
     <script>
         $(document).ready(function () {
             $('.sidenav').sidenav();
+            $('.datepicker').datepicker({
+                format: 'yyyy/mm/dd'
+            });
+            $('.timepicker').timepicker();
         });
     </script>
+    {% block scripts %}{% endblock %}
 </body>
 
 </html>
