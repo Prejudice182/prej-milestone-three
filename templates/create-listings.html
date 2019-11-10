@@ -34,11 +34,9 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script>
     {% for message in get_flashed_messages() %}
     M.toast({
         html: '{{ message }}'
     })
     {% endfor %}
-</script>
 {% endblock %}

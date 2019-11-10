@@ -2,3 +2,10 @@
 {% block content %}
     <h1>Cinema Listings</h1>
 {% endblock %}
+{% block scripts %}
+    {% for message in get_flashed_messages() %}
+    M.toast({
+        html: '{{ message }}'
+    })
+    {% endfor %}
+{% endblock %}

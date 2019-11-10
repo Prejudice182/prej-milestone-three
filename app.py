@@ -32,8 +32,13 @@ def create_listings():
     listings_form = ListingsForm(request.form)
     if request.method == 'POST':
         if listings_form.validate():
+            data = request.form.to_dict()
+            try:
+                mongo.db.listings.insert_one(data)
+            except Exception as e:
+                flash(str(e))
             flash("Listing added.")
-            return render_template("create-listings.html", form=listings_form, title="Listings")
+            return redirect(url_for('home'))
     return render_template("create-listings.html", form=listings_form, title="Create Listings")
 
 

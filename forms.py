@@ -8,7 +8,7 @@ class ListingsForm(Form):
         InputRequired(message=('Need to name the film!'))
     ])
     screen_number = IntegerField('Screen Number', [
-        InputRequired(message=('What screen is it in?'))
+        DataRequired(message=('That\'s not a number! Try again!'))
     ])
     date_field = DateField('Date', [
         InputRequired(message=('What day is it on?'))
