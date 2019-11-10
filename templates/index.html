@@ -1,6 +1,13 @@
 {% extends 'base.html'%}
 {% block content %}
     <h1>Cinema Listings</h1>
+    <div class="row">
+        {% for listing in listings %}
+        <div class="col s6">
+            <img class="responsive-img" src="{{ listing.poster }}" alt="{{ listing.film_name }}">
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 {% block scripts %}
     {% for message in get_flashed_messages() %}
