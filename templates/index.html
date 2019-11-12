@@ -1,18 +1,12 @@
 {% extends 'base.html'%}
 {% block content %}
-    <h1>Cinema Listings</h1>
-    <div class="row">
-        {% for listing in listings %}
-        <div class="col s6">
-            <img class="responsive-img" src="{{ listing.poster }}" alt="{{ listing.film_name }}">
-        </div>
-        {% endfor %}
-    </div>
-{% endblock %}
-{% block scripts %}
-    {% for message in get_flashed_messages() %}
-    M.toast({
-        html: '{{ message }}'
-    })
+    <h1>Home</h1>
+    <h3>Movies</h3>
+    {% for movie in movies %}
+        <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+    {% endfor %}
+    <h3>TV Shows</h3>
+    {% for show in tvshows %}
+        <img src="{{ show.poster }}" alt="{{ show.title }}">
     {% endfor %}
 {% endblock %}

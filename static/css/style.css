@@ -1,0 +1,12 @@
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+img.responsive-img {
+    height: 100%;
+}
+
+.muted-dropdown {
+    color: rgba(0,0,0, 0.1);
+}
