@@ -1,12 +1,37 @@
 {% extends 'base.html'%}
+{% macro render_card(entry) -%}
+<div class="col m4">
+    <div class="card large">
+        <div class="card-image">
+            <img class="responsive-img" src="{{ entry.poster }}" alt="{{ entry.title }}">
+            <span class="card-title">{{ entry.title }}</span>
+        </div>
+        <div class="card-content">
+            <p>{{ entry.plot }}</p>{{ caller() }}
+        </div>
+        <div class="card-action">
+            <a href="/vote-down/{{ entry._id }}"><i class="material-icons">arrow_drop_down</i></a>
+            <a href="/vote-up/{{ entry._id }}" class="right"><i class="material-icons">arrow_drop_up</i></a>
+        </div>
+    </div>
+</div>
+{%- endmacro %}
 {% block content %}
-    <h1>Home</h1>
-    <h3>Movies</h3>
+<h1>Home</h1>
+<h3>Movies</h3>
+<div class="row flex">
     {% for movie in movies %}
-        <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+    {% call render_card(movie) %} {% endcall %}
+    {% else %}
+    <h4>No movies found!</h4>
     {% endfor %}
-    <h3>TV Shows</h3>
+</div>
+<h3>TV Shows</h3>
+<div class="row flex">
     {% for show in tvshows %}
-        <img src="{{ show.poster }}" alt="{{ show.title }}">
+    {% call render_card(show) %} {% endcall %}
+    {% else %}
+    <h4>No TV Shows found!</h4>
     {% endfor %}
+</div>
 {% endblock %}

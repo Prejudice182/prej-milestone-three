@@ -36,15 +36,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         $(document).ready(() => {
-            $('.sidenav').sidenav();
-            $('select').formSelect();
-            $('.select-dropdown').addClass("muted-dropdown");
-            $('.select-dropdown').click((event) => {
-                $(event.currentTarget).removeClass("muted-dropdown");
-            });
+            $(".sidenav").sidenav();
+            $("select").formSelect();
         });
         {% for message in get_flashed_messages() %}
-            M.toast({ html: '{{ message }}' })
+            M.toast({ html: "{{ message }}" })
         {% endfor %}
     </script>
 </body>

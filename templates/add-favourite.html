@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Add Favourite</h1>
 <div class="formwrapper">
-    <form method="POST">
+    <form action="{{ url_for('add_favourite') }}" method="POST">
         <div class="entry-name input-field">
             {{ form.entry_name(placeholder='Avengers: Endgame') }} {{ form.entry_name.label }}
             {% if form.entry_name.errors %}
@@ -10,16 +10,7 @@
             {% endif %}
         </div>
         <div class="entry-type input-field">
-            <select id="entry_type" name="entry_type" required>
-            {% for subfield in form.entry_type %}
-                {% if loop.index == 1 %}
-                {{ subfield(**{'disabled': 'disabled'}) }}
-                {% else %}
-                {{ subfield }}
-                {% endif %}
-            {% endfor %}
-            </select>
-            {{ form.entry_type.label(id='entry_type')}}
+            {{ form.entry_type }} {{ form.entry_type.label }}
             {% if form.entry_type.errors %}
             <ul class="errors">{%  for error in form.entry_type.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
