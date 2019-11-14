@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Add Favourite</h1>
 <div class="formwrapper">
-    <form action="{{ url_for('add_favourite') }}" method="POST">
+    <form action="{{ url_for('favs_bp.add_favourite') }}" method="POST">
         <div class="entry-name input-field">
             {{ form.entry_name(placeholder='Avengers: Endgame') }} {{ form.entry_name.label }}
             {% if form.entry_name.errors %}
