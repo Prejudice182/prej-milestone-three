@@ -1,9 +1,10 @@
+# Import required modules
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, validators
 from wtforms.validators import InputRequired
 from wtforms.widgets import Select, html_params, HTMLString
 
-# Code taken from https://stackoverflow.com/questions/23460857/create-selectfield-options-with-custom-attributes-in-wtforms
+# Code below taken from https://stackoverflow.com/questions/23460857/create-selectfield-options-with-custom-attributes-in-wtforms
 
 
 class AttribSelect(Select):
@@ -44,7 +45,9 @@ class AttribSelectField(SelectField):
 # End code from Stack Overflow
 
 
+# Define our EntryForm class, inheriting from FlaskForm
 class EntryForm(FlaskForm):
+    ''' Defines a form to be used for adding a favourite show or movie '''
     entry_name = StringField('Movie / TV Show Name', [InputRequired()])
     entry_type = AttribSelectField('Type', [InputRequired()], choices=[
         ('', 'Please select a type', dict(disabled='disabled')), ('movie', 'Movie', dict()), ('series', 'TV Show', dict())], default='')
