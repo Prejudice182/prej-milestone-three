@@ -1,8 +1,13 @@
 .flex {
     display: flex;
     flex-wrap: wrap;
-  }
+    justify-content: center;
+}
 
-  .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating){
-      margin: 0;
-  }
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+    margin: 0;
+}
+
+.row .col.m4 {
+    margin: 0;
+}

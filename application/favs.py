@@ -1,4 +1,4 @@
-from flask import redirect, render_template, flash, Blueprint, request, url_for
+from flask import redirect, render_template, flash, Blueprint, request, url_for, abort
 from flask import current_app as app
 import requests
 import os
@@ -40,3 +40,18 @@ def add_favourite():
         else:
             flash('Someone already added that one!')
     return render_template('add-favourite.html', title='Add Favourite', form=entry_form)
+
+
+@favs_bp.route('/view-all/<entry_type>', methods=['GET'])
+def view_all(entry_type):
+    if entry_type == 'movies':
+        coll_name = entry_type[:-1]
+        title = entry_type.capitalize()
+    elif entry_type == 'tvshows':
+        coll_name = 'series'
+        title = 'TV Shows'
+    else:
+        abort(404)
+    entries = mongo.db[coll_name].find()
+    return render_template('view-all.html', title=title, entries=entries)
+
