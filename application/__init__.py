@@ -1,7 +1,6 @@
 # Import required modules
 from flask import Flask
 from flask_pymongo import PyMongo
-from flask_session import Session
 from dotenv import load_dotenv
 
 # Define global database object
