@@ -8,14 +8,18 @@ from flask import current_app as app
 main_bp = Blueprint('main_bp', __name__,
                     template_folder='templates', static_folder='static')
 
+favs = mongo.db.favourites
+
 # Homepage route
 @main_bp.route('/', methods=['GET'])
 def home():
     # Fetch entries from database
-    movies = mongo.db.movie.find()
-    tvshows = mongo.db.series.find()
+    movies = favs.find({'Type': 'movie'}).sort(
+        'Votes', pymongo.DESCENDING).limit(3)
+    tvshows = favs.find({'Type': 'series'}).sort(
+        'Votes', pymongo.DESCENDING).limit(3)
 
-    return render_template('index.html', title="Home", movies=movies.sort('votes', pymongo.DESCENDING).limit(3), tvshows=tvshows.sort('votes', pymongo.DESCENDING).limit(3))
+    return render_template('index.html', title="Home", movies=movies, tvshows=tvshows)
 
 # Error handler for entire app if page not found
 @main_bp.app_errorhandler(404)

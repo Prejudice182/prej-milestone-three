@@ -1,14 +1,18 @@
 # Import required modules
 from flask import redirect, render_template, flash, Blueprint, request, url_for, abort
 from flask import current_app as app
+from bson.objectid import ObjectId
 import requests
 import os
-from .forms import EntryForm
+from .forms import EntryForm, EditForm
 from . import mongo
 
 # Define favs blueprint
 favs_bp = Blueprint('favs_bp', __name__,
                     template_folder='templates', static_folder='static')
+
+# Define favs for ease of access
+favs = mongo.db.favourites
 
 # Add Favourite route
 @favs_bp.route('/add-favourite', methods=['GET', 'POST'])
@@ -19,27 +23,16 @@ def add_favourite():
     # Flask-WTF provides wrapper for method=POST AND validate()
     if entry_form.validate_on_submit():
         # Check if title with this name already exists, flash message if it does
-        if not mongo.db[request.form.get('entry_type')].count_documents({'title': request.form.get('entry_name')}, limit=1):
+        if not favs.count_documents({'Title': request.form.get('entry_name')}, limit=1):
             # Get details for this entry from OMDB API: http://www.omdbapi.com/
             OMDB_KEY = os.getenv('OMDB_KEY')
             url = f'http://www.omdbapi.com/?apikey={OMDB_KEY}&t={request.form["entry_name"]}&type={request.form["entry_type"]}'
             entry_details = requests.get(url).json()
-
+            entry_details.update({'Reason': request.form.get(
+                'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1})
             # Try insert to DB, flash error message on fail, flash and redirect on success
             try:
-                coll_name = mongo.db[request.form['entry_type']]
-                coll_name.insert_one({
-                    'title': entry_details['Title'],
-                    'year': entry_details['Year'],
-                    'release': entry_details['Released'],
-                    'genres': entry_details['Genre'],
-                    'plot': entry_details['Plot'],
-                    'poster': entry_details['Poster'],
-                    'imdbRating': entry_details['imdbRating'],
-                    'reason': request.form['reason'],
-                    'addedBy': request.form['username'],
-                    'votes': 1
-                })
+                favs.insert_one(entry_details)
             except:
                 flash('Something went wrong! Please try again')
             else:
@@ -47,7 +40,7 @@ def add_favourite():
                 return redirect(url_for('main_bp.home'))
         else:
             flash('Someone already added that one!')
-    return render_template('add-favourite.html', title='Add Favourite', form=entry_form)
+    return render_template('add-fav.html', title='Add Favourite', form=entry_form)
 
 
 # View all entries route, with type sent in URL
@@ -55,16 +48,38 @@ def add_favourite():
 def view_all(entry_type):
     # Get correct collection name for database
     if entry_type == 'movies':
-        coll_name = entry_type[:-1]
+        entry_type = entry_type[:-1]
         title = entry_type.capitalize()
     elif entry_type == 'tvshows':
-        coll_name = 'series'
+        entry_type = 'series'
         title = 'TV Shows'
     else:
         # If someone trys a malformed URL, send to 404 page
         abort(404)
 
     # Retrieve entries from database
-    entries = mongo.db[coll_name].find()
+    entries = favs.find({'Type': entry_type})
 
     return render_template('view-all.html', title=title, entries=entries)
+
+
+@favs_bp.route('/edit-fav/<entry_id>', methods=['GET', 'POST'])
+def edit_favourite(entry_id):
+    entry = favs.find_one({'_id': ObjectId(entry_id)},
+                          {'Type': 1, 'Reason': 1, 'AddedBy': 1})
+    entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
+    edit_form = EditForm()
+    if edit_form.validate_on_submit():
+        try:
+            favs.update_one({'_id': ObjectId(entry_id)}, {
+                '$set': {
+                    'AddedBy': request.form.get('username'),
+                    'Reason': request.form.get('reason')
+                }
+            })
+        except:
+            flash('Something went wrong! Please try again')
+        else:
+            flash('Favourite updated')
+            return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
+    return render_template('edit-fav.html', title='Edit Favourite', entry=entry, form=edit_form)

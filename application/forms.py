@@ -53,4 +53,10 @@ class EntryForm(FlaskForm):
         ('', 'Please select a type', dict(disabled='disabled')), ('movie', 'Movie', dict()), ('series', 'TV Show', dict())], default='')
     username = StringField('Your Name', [InputRequired()])
     reason = TextAreaField('Reason', [InputRequired()])
-    submit = SubmitField('Post Listing')
+    submit = SubmitField('Add Favourite')
+
+
+class EditForm(FlaskForm):
+    username = StringField('Your Name', [InputRequired()])
+    reason = TextAreaField('Reason', [InputRequired()])
+    submit = SubmitField('Edit Favourite')
