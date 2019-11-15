@@ -45,6 +45,20 @@ class BasicTests(unittest.TestCase):
                                'Prejudice', 'Blash blah')
         self.assertIn(b'Someone already added that one!', response.data)
 
+    def test_view_all_valid(self):
+        response = self.app.get('/view-all/movies', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        response = self.app.get('/view-all/tvshows', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_all_invalid(self):
+        response = self.app.get('/view-all/fake-name', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_404(self):
+        response = self.app.get('/this-doesnt-exist', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
+
 
 if __name__ == '__main__':
     unittest.main()
