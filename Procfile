@@ -1,1 +1,1 @@
-web: waitress-serve --call application:create_app --listen=127.0.0.1:8080
+web: waitress-serve --listen=127.0.0.1:8080 --call application:create_app 
