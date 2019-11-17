@@ -6,15 +6,10 @@ from application import create_app, mongo
 
 class BasicTests(unittest.TestCase):
     def setUp(self):
-        app = create_app()
-        app.config['TESTING'] = True
-        app.config['WTF_CSRF_ENABLED'] = False
-        app.config['DEBUG'] = False
-        app.config['MONGO_URI'] = 'mongodb+srv://prejudice182:Oiheivai123@myfirstcluster-1ow6a.mongodb.net/tests?retryWrites=true&w=majority'
+        app = create_app('config.TestConfig')
         mongo.init_app(app)
         self.app = app.test_client()
-        mongo.db.movie.drop()
-        mongo.db.series.drop()
+        mongo.db.favourites.remove()
 
     def tearDown(self):
         pass
@@ -32,8 +27,8 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_valid_add_favourite(self):
-        response = self.addFav('Great Escape', 'movie',
-                               'Prejudice', 'Blash blah')
+        response = self.addFav('The Great Escape', 'movie',
+                               'Prejudice', 'Blah blah')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Favourite saved!', response.data)
 

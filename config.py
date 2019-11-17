@@ -13,3 +13,9 @@ class Config:
     # Database
     MONGO_URI = os.getenv('MONGO_URI')
     
+
+class TestConfig(Config):
+    TESTING = True
+    FLASK_DEBUG = False
+    MONGO_URI = os.getenv('TESTS_MONGO_URI')
+    WTF_CSRF_ENABLED = False

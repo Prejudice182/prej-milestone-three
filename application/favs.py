@@ -1,6 +1,5 @@
 # Import required modules
 from flask import redirect, render_template, flash, Blueprint, request, url_for, abort
-from flask import current_app as app
 from bson.objectid import ObjectId
 import requests
 import os
@@ -22,14 +21,16 @@ def add_favourite():
 
     # Flask-WTF provides wrapper for method=POST AND validate()
     if entry_form.validate_on_submit():
+        # Get details for this entry from OMDB API: http://www.omdbapi.com/
+        OMDB_KEY = os.getenv('OMDB_KEY')
+        url = f'http://www.omdbapi.com/?apikey={OMDB_KEY}&t={request.form["entry_name"]}&type={request.form["entry_type"]}'
+        entry_details = requests.get(url).json()
+
         # Check if title with this name already exists, flash message if it does
-        if not favs.count_documents({'Title': request.form.get('entry_name')}, limit=1):
-            # Get details for this entry from OMDB API: http://www.omdbapi.com/
-            OMDB_KEY = os.getenv('OMDB_KEY')
-            url = f'http://www.omdbapi.com/?apikey={OMDB_KEY}&t={request.form["entry_name"]}&type={request.form["entry_type"]}'
-            entry_details = requests.get(url).json()
+        if not favs.count_documents({'Title': entry_details["Title"]}, limit=1):
             entry_details.update({'Reason': request.form.get(
                 'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1})
+
             # Try insert to DB, flash error message on fail, flash and redirect on success
             try:
                 favs.insert_one(entry_details)
