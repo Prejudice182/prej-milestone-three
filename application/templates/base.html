@@ -42,6 +42,7 @@
         $(document).ready(() => {
             $(".sidenav").sidenav();
             $("select").formSelect();
+            $('.modal').modal();
         });
         {% for message in get_flashed_messages() %}
             M.toast({ html: "{{ message }}" })

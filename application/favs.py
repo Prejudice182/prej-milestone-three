@@ -49,7 +49,7 @@ def view_all(entry_type):
     # Get correct collection name for database
     if entry_type == 'movies':
         entry_type = entry_type[:-1]
-        title = entry_type.capitalize()
+        title = 'Movies'
     elif entry_type == 'tvshows':
         entry_type = 'series'
         title = 'TV Shows'
@@ -64,22 +64,41 @@ def view_all(entry_type):
 
 
 @favs_bp.route('/edit-fav/<entry_id>', methods=['GET', 'POST'])
-def edit_favourite(entry_id):
+def edit_fav(entry_id):
     entry = favs.find_one({'_id': ObjectId(entry_id)},
                           {'Type': 1, 'Reason': 1, 'AddedBy': 1})
-    entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
-    edit_form = EditForm()
-    if edit_form.validate_on_submit():
+    if entry is not None:
+        entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
+        edit_form = EditForm()
+        if edit_form.validate_on_submit():
+            try:
+                favs.update_one({'_id': ObjectId(entry_id)}, {
+                    '$set': {
+                        'AddedBy': request.form.get('username'),
+                        'Reason': request.form.get('reason')
+                    }
+                })
+            except:
+                flash('Something went wrong! Please try again.')
+            else:
+                flash('Favourite updated!')
+                return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
+        return render_template('edit-fav.html', title='Edit Favourite', entry=entry, form=edit_form)
+    else:
+        abort(404)
+
+
+@favs_bp.route('/delete-fav/<entry_id>', methods=['POST'])
+def delete_fav(entry_id):
+    entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Type': 1})
+    if entry is not None:
+        entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
         try:
-            favs.update_one({'_id': ObjectId(entry_id)}, {
-                '$set': {
-                    'AddedBy': request.form.get('username'),
-                    'Reason': request.form.get('reason')
-                }
-            })
+            favs.delete_one({'_id': ObjectId(entry_id)})
         except:
-            flash('Something went wrong! Please try again')
+            flash('Something went wrong! Please try again.')
         else:
-            flash('Favourite updated')
+            flash('Favourite deleted!')
             return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
-    return render_template('edit-fav.html', title='Edit Favourite', entry=entry, form=edit_form)
+    else:
+        flash('Something went wrong! Please try again.')
