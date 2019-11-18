@@ -92,14 +92,14 @@ def edit_fav(entry_id):
 @favs_bp.route('/delete-fav/<entry_id>', methods=['POST'])
 def delete_fav(entry_id):
     entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Type': 1})
+    entry_type = 'movies' if request.form.get('entry_type') == 'movie' else 'tvshows'
     if entry is not None:
-        entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
         try:
             favs.delete_one({'_id': ObjectId(entry_id)})
         except:
             flash('Something went wrong! Please try again.')
         else:
             flash('Favourite deleted!')
-            return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
     else:
-        flash('Something went wrong! Please try again.')
+        flash('No record with that ID found!')
+    return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
