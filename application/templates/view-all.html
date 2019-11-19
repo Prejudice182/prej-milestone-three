@@ -12,6 +12,7 @@
         <div class="card-action">
             <a href="/vote-down/{{ entry._id }}"><i class="material-icons">arrow_drop_down</i></a>
             <a href="{{ url_for('favs_bp.edit_fav', entry_id=entry._id) }}">EDIT</a>
+            <a href="{{ url_for('favs_bp.view_fav', entry_id=entry._id) }}">VIEW</a>
             <a href="#deleteModal{{ entry._id }}" class="modal-trigger">DELETE</a>
             <a href="/vote-up/{{ entry._id }}" class="right"><i class="material-icons">arrow_drop_up</i></a>
         </div>

@@ -44,26 +44,6 @@ def add_favourite():
     return render_template('add-fav.html', title='Add Favourite', form=entry_form)
 
 
-# View all entries route, with type sent in URL
-@favs_bp.route('/view-all/<entry_type>', methods=['GET'])
-def view_all(entry_type):
-    # Get correct collection name for database
-    if entry_type == 'movies':
-        entry_type = entry_type[:-1]
-        title = 'Movies'
-    elif entry_type == 'tvshows':
-        entry_type = 'series'
-        title = 'TV Shows'
-    else:
-        # If someone trys a malformed URL, send to 404 page
-        abort(404)
-
-    # Retrieve entries from database
-    entries = favs.find({'Type': entry_type})
-
-    return render_template('view-all.html', title=title, entries=entries)
-
-
 @favs_bp.route('/edit-fav/<entry_id>', methods=['GET', 'POST'])
 def edit_fav(entry_id):
     entry = favs.find_one({'_id': ObjectId(entry_id)},
@@ -83,7 +63,7 @@ def edit_fav(entry_id):
                 flash('Something went wrong! Please try again.')
             else:
                 flash('Favourite updated!')
-                return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
+                return redirect(url_for('main_bp.view_all', entry_type=entry_type))
         return render_template('edit-fav.html', title='Edit Favourite', entry=entry, form=edit_form)
     else:
         abort(404)
@@ -92,7 +72,8 @@ def edit_fav(entry_id):
 @favs_bp.route('/delete-fav/<entry_id>', methods=['POST'])
 def delete_fav(entry_id):
     entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Type': 1})
-    entry_type = 'movies' if request.form.get('entry_type') == 'movie' else 'tvshows'
+    entry_type = 'movies' if request.form.get(
+        'entry_type') == 'movie' else 'tvshows'
     if entry is not None:
         try:
             favs.delete_one({'_id': ObjectId(entry_id)})
@@ -102,4 +83,15 @@ def delete_fav(entry_id):
             flash('Favourite deleted!')
     else:
         flash('No record with that ID found!')
-    return redirect(url_for('favs_bp.view_all', entry_type=entry_type))
+    return redirect(url_for('main_bp.view_all', entry_type=entry_type))
+
+
+@favs_bp.route('/view-fav/<entry_id>', methods=['GET'])
+def view_fav(entry_id):
+    req_fields = {'_id': 0, 'Title': 1, 'Rated': 1, 'Released': 1, 'Runtime': 1, 'Genre': 1, 'Director': 1, 'Actors': 1, 'Plot': 1, 'Poster': 1, 'imdbRating': 1, 'imdbID': 1, 'Reason': 1, 'AddedBy': 1, 'Votes': 1, 'Type': 1}
+    entry = favs.find_one({'_id': ObjectId(entry_id)}, req_fields)
+    if entry is not None:
+        entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
+        return render_template('view-fav.html', title='View Favourite', entry=entry, entry_type=entry_type)
+    else:
+        abort(404)

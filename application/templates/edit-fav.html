@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Edit Favourite</h1>
 <div class="formwrapper">
-    <form action="{{ url_for('favs_bp.edit_favourite', entry_id=entry._id) }}" method="POST">
+    <form action="{{ url_for('favs_bp.edit_fav', entry_id=entry._id) }}" method="POST">
         <div class="username input-field">
             {{ form.username(value=entry.AddedBy) }} {{ form.username.label }}
             {% if form.username.errors %}
