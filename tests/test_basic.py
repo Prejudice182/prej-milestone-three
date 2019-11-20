@@ -13,7 +13,7 @@ class BasicTests(unittest.TestCase):
         pass
 
     def addFav(self, entry, eType, name, reason):
-        return self.app.post('/add-fav', data=dict(
+        return self.app.post('/add-favourite', data=dict(
             entry_name=entry,
             entry_type=eType,
             username=name,

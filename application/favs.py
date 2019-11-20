@@ -14,8 +14,8 @@ favs_bp = Blueprint('favs_bp', __name__,
 favs = mongo.db.favourites
 
 # Add Favourite route
-@favs_bp.route('/add-fav', methods=['GET', 'POST'])
-def add_fav():
+@favs_bp.route('/add-favourite', methods=['GET', 'POST'])
+def add_favourite():
     # Create form with EntryForm class
     entry_form = EntryForm()
 
