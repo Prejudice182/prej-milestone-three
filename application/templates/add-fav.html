@@ -1,37 +1,35 @@
 {% extends 'base.html'%}
 {% block content %}
 <h1>Add Favourite</h1>
-<div class="formwrapper">
-    <form action="{{ url_for('favs_bp.add_favourite') }}" method="POST">
-        <div class="entry-name input-field">
-            {{ form.entry_name(placeholder='Avengers: Endgame') }} {{ form.entry_name.label }}
-            {% if form.entry_name.errors %}
-            <ul class="errors">{%  for error in form.entry_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="entry-type input-field">
-            {{ form.entry_type }} {{ form.entry_type.label }}
-            {% if form.entry_type.errors %}
-            <ul class="errors">{%  for error in form.entry_type.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="username input-field">
-            {{ form.username(placeholder='Joe Bloggs') }} {{ form.username.label }}
-            {% if form.username.errors %}
-            <ul class="errors">{%  for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="reason input-field">
-            {{ form.reason(placeholder='The coming together of all of Marvel\'s greatest superheroes', class_='materialize-textarea') }} {{ form.reason.label }}
-            {% if form.reason.errors %}
-            <ul class="errors">{%  for error in form.reason.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        
-        <div class="submitbutton">
-            <input id="submit" type="submit" value="Submit">
-        </div>
-        {{ form.hidden_tag() }}
-    </form>
-</div>
+<form action="{{ url_for('favs_bp.add_fav') }}" method="POST">
+    <div class="entry-name form-group">
+        {{ form.entry_name.label }}{{ form.entry_name(placeholder='Avengers: Endgame', class_='form-control') }}
+        {% if form.entry_name.errors %}
+        <ul class="errors">{%  for error in form.entry_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+    </div>
+    <div class="entry-type form-group">
+        {{ form.entry_type.label }}{{ form.entry_type(class_='form-control') }}
+        {% if form.entry_type.errors %}
+        <ul class="errors">{%  for error in form.entry_type.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+    </div>
+    <div class="username form-group">
+        {{ form.username.label }}{{ form.username(placeholder='Joe Bloggs', class_='form-control') }}
+        {% if form.username.errors %}
+        <ul class="errors">{%  for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+    </div>
+    <div class="reason form-group">
+        {{ form.reason.label }}{{ form.reason(placeholder='The coming together of all of Marvel\'s greatest superheroes', class_='form-control') }}
+        {% if form.reason.errors %}
+        <ul class="errors">{%  for error in form.reason.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+    </div>
+    
+    <div class="submitbutton">
+        <input id="submit" type="submit" value="Submit">
+    </div>
+    {{ form.hidden_tag() }}
+</form>
 {% endblock %}

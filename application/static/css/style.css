@@ -4,10 +4,15 @@
     justify-content: center;
 }
 
-.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
-    margin: 0;
+.flex .col {
+    margin-left: 0 !important;
 }
 
-.row .col.m4 {
-    margin: 0;
+.card .card-action {
+    padding: 10px 15px;
+    top: 460px;
+}
+
+.card-action .row {
+    margin: -10px 0;
 }
