@@ -1,15 +1,19 @@
 {% extends 'base.html'%}
 {% block content %}
-<h1>View Favourite</h1>
+<h4>View Favourite</h4>
 <div class="row">
-    <div class="col m3">
+    <div class="col m3 center-align">
         <img src="{{ entry.Poster }}" alt="Poster for {{ entry.Title }}">
+        <a href="{{ url_for('favs_bp.vote', direction='down', entry_id=entry._id) }}" class="left"><i class="material-icons">thumb_down</i></a>
+        <a href="https://www.imdb.com/title/{{ entry.imdbID }}" target="_blank">View on IMDb</a>
+        <a href="{{ url_for('favs_bp.vote', direction='up', entry_id=entry._id) }}" class="right"><i class="material-icons">thumb_up</i></a>
     </div>
     <div class="col m9">
         <div class="details">
+            {% set _dummy = entry.pop('Poster') %}
             {% for k, v in entry.items() %}
-            {% if ('Type' not in k) and ('imdbID' not in k) and ('Poster' not in k) %}
-            <div class="row">
+            {% if k not in ['_id', 'Type', 'imdbID', 'Trailer'] %}
+            <div class="row {{ loop.cycle('odd', 'even') }}">
                 {% if 'AddedBy' in k %}
                 <div class="col s3">{{ k[:5] + ' ' + k[-2:] }}: </div>
                 {% elif 'imdbRating' in k %}
@@ -21,6 +25,13 @@
             </div>
             {% endif %}
             {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="video-container">
+            <iframe src="//www.youtube.com/embed/{{ entry.Trailer }}" frameborder="0"></iframe>
         </div>
     </div>
 </div>

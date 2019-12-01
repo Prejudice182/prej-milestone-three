@@ -1,5 +1,5 @@
 # Import required modules
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, request
 from . import mongo
 from flask_pymongo import pymongo
 from flask import current_app as app
@@ -35,9 +35,12 @@ def view_all(entry_type):
         # If someone trys a malformed URL, send to 404 page
         abort(404)
 
-    # Retrieve entries from database
-    entries = favs.find({'Type': entry_type})
+    # Get skip argument from URL
+    skip = request.args.get('skip') or 0
 
+    # Retrieve entries from database
+    entries_count = favs.count_documents({'Type': entry_type}, skip)
+    entries = favs.find({'Type': entry_type}).sort('Votes', pymongo.DESCENDING).skip(skip).limit(6)
     return render_template('view-all.html', title=title, entries=entries)
 
 # Error handler for entire app if page not found

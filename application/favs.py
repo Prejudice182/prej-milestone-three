@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 import requests
 import os
 from .forms import EntryForm, EditForm
+from .youtube import youtube_search
 from . import mongo
 
 # Define favs blueprint
@@ -28,8 +29,9 @@ def add_favourite():
 
         # Check if title with this name already exists, flash message if it does
         if not favs.count_documents({'Title': entry_details["Title"]}, limit=1):
+            trailer = youtube_search(entry_details["Title"] + ' trailer')
             entry_details.update({'Reason': request.form.get(
-                'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1})
+                'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1, 'Trailer': trailer})
 
             # Try insert to DB, flash error message on fail, flash and redirect on success
             try:
@@ -41,6 +43,8 @@ def add_favourite():
                 return redirect(url_for('main_bp.home'))
         else:
             flash('Someone already added that one!')
+            return redirect(url_for('favs_bp.add_favourite'))
+            
     return render_template('add-fav.html', title='Add Favourite', form=entry_form)
 
 
@@ -63,7 +67,7 @@ def edit_fav(entry_id):
                 flash('Something went wrong! Please try again.')
             else:
                 flash('Favourite updated!')
-                return redirect(url_for('main_bp.view_all', entry_type=entry_type))
+            return redirect(url_for('main_bp.view_all', entry_type=entry_type))
         return render_template('edit-fav.html', title='Edit Favourite', entry=entry, form=edit_form)
     else:
         abort(404)
@@ -72,8 +76,6 @@ def edit_fav(entry_id):
 @favs_bp.route('/delete-fav/<entry_id>', methods=['POST'])
 def delete_fav(entry_id):
     entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Type': 1})
-    entry_type = 'movies' if request.form.get(
-        'entry_type') == 'movie' else 'tvshows'
     if entry is not None:
         try:
             favs.delete_one({'_id': ObjectId(entry_id)})
@@ -83,15 +85,41 @@ def delete_fav(entry_id):
             flash('Favourite deleted!')
     else:
         flash('No record with that ID found!')
-    return redirect(url_for('main_bp.view_all', entry_type=entry_type))
+    return redirect(request.referrer)
 
 
 @favs_bp.route('/view-fav/<entry_id>', methods=['GET'])
 def view_fav(entry_id):
-    req_fields = {'_id': 0, 'Title': 1, 'Rated': 1, 'Released': 1, 'Runtime': 1, 'Genre': 1, 'Director': 1, 'Actors': 1, 'Plot': 1, 'Poster': 1, 'imdbRating': 1, 'imdbID': 1, 'Reason': 1, 'AddedBy': 1, 'Votes': 1, 'Type': 1}
+    req_fields = {'_id': 1, 'Title': 1, 'Rated': 1, 'Released': 1, 'Runtime': 1, 'Genre': 1, 'Director': 1, 'Actors': 1,
+                  'Plot': 1, 'Poster': 1, 'imdbRating': 1, 'imdbID': 1, 'Reason': 1, 'AddedBy': 1, 'Votes': 1, 'Type': 1, 'Trailer': 1}
     entry = favs.find_one({'_id': ObjectId(entry_id)}, req_fields)
     if entry is not None:
         entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
         return render_template('view-fav.html', title='View Favourite', entry=entry, entry_type=entry_type)
+    else:
+        abort(404)
+
+
+@favs_bp.route('/vote-<direction>/<entry_id>', methods=['GET'])
+def vote(direction, entry_id):
+    entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Votes': 1})
+    if entry is not None:
+        if direction == 'up':
+            votes = entry['Votes'] + 1
+        elif direction == 'down':
+            votes = entry['Votes'] - 1
+        else:
+            abort(404)
+        try:
+            favs.update_one({'_id': ObjectId(entry_id)}, {
+                '$set': {
+                    'Votes': votes
+                }
+            })
+        except:
+            flash('Something is wrong with the database. Please try again!')
+        else:
+            flash('Thank you for voting!')
+        return redirect(request.referrer)
     else:
         abort(404)

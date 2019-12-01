@@ -3,18 +3,20 @@
 <div class="col m4">
     <div class="card large">
         <div class="card-image">
-            <img class="responsive-img" src="{{ entry.Poster }}" alt="{{ entry.Title }}">
+            <div id="card-img">
+                <img class="responsive-img" src="{{ entry.Poster }}" alt="{{ entry.Title }}">
+            </div>
             <span class="card-title">{{ entry.Title }}</span>
         </div>
         <div class="card-content">
             <p>{{ entry.Plot }}</p>{{ caller() }}
         </div>
-        <div class="card-action">
-            <a href="/vote-down/{{ entry._id }}"><i class="material-icons">arrow_drop_down</i></a>
+        <div class="card-action center-align" id="card-buttons">
+            <a href="{{ url_for('favs_bp.vote', direction='down', entry_id=entry._id) }}" class="left"><i class="material-icons">thumb_down</i></a>
             <a href="{{ url_for('favs_bp.edit_fav', entry_id=entry._id) }}">EDIT</a>
             <a href="{{ url_for('favs_bp.view_fav', entry_id=entry._id) }}">VIEW</a>
             <a href="#deleteModal{{ entry._id }}" class="modal-trigger">DELETE</a>
-            <a href="/vote-up/{{ entry._id }}" class="right"><i class="material-icons">arrow_drop_up</i></a>
+            <a href="{{ url_for('favs_bp.vote', direction='up', entry_id=entry._id) }}" class="right"><i class="material-icons">thumb_up</i></a>
         </div>
         <div class="modal" id="deleteModal{{ entry._id }}">
             <div class="modal-content">

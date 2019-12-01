@@ -3,35 +3,37 @@
 <div class="col m4">
     <div class="card large">
         <div class="card-image">
-            <img class="responsive-img" src="{{ entry.Poster }}" alt="{{ entry.Title }}">
+            <div id="card-img">
+                <img class="responsive-img" src="{{ entry.Poster }}" alt="{{ entry.Title }}">
+            </div>
             <span class="card-title">{{ entry.Title }}</span>
         </div>
         <div class="card-content">
             <p>{{ entry.Plot }}</p>{{ caller() }}
         </div>
-        <div class="card-action">
-            <a href="/vote-down/{{ entry._id }}"><i class="material-icons">arrow_drop_down</i></a>
-            <a href="/vote-up/{{ entry._id }}" class="right"><i class="material-icons">arrow_drop_up</i></a>
+        <div class="card-action center-align" id="card-buttons">
+            <a href="/vote-down/{{ entry._id }}" class="left"><i class="material-icons">thumb_down</i></a>
+            {{ entry.Votes }}
+            <a href="/vote-up/{{ entry._id }}" class="right"><i class="material-icons">thumb_up</i></a>
         </div>
     </div>
 </div>
 {%- endmacro %}
 {% block content %}
-<h1>Home</h1>
-<h3>Movies</h3>
+<h4>Movies</h4>
 <div class="row flex">
     {% for movie in movies %}
     {% call render_card(movie) %} {% endcall %}
     {% else %}
-    <h4>No movies found!</h4>
+    <h5>No movies found!</h5>
     {% endfor %}
 </div>
-<h3>TV Shows</h3>
+<h4>TV Shows</h4>
 <div class="row flex">
     {% for show in tvshows %}
     {% call render_card(show) %} {% endcall %}
     {% else %}
-    <h4>No TV Shows found!</h4>
+    <h5>No TV Shows found!</h5>
     {% endfor %}
 </div>
 {% endblock %}
