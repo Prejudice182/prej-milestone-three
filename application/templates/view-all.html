@@ -27,7 +27,6 @@
             </div>
             <div class="modal-footer">
                 <form action="{{ url_for('favs_bp.delete_fav', entry_id=entry._id) }}" method="post">
-                    <input type="hidden" name="entry_type" value="{{ entry.Type }}">
                     <input type="submit" value="DELETE">
                 </form>
                 <a href="#!" class="modal-close">CANCEL</a>

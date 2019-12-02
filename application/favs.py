@@ -85,7 +85,7 @@ def delete_fav(entry_id):
             flash('Favourite deleted!')
     else:
         flash('No record with that ID found!')
-    return redirect(request.referrer)
+    return redirect(request.referrer or url_for('main_bp.home'))
 
 
 @favs_bp.route('/view-fav/<entry_id>', methods=['GET'])
