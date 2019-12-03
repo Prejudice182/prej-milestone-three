@@ -26,22 +26,22 @@ def home():
 def view_all(entry_type):
     # Get correct collection name for database
     if entry_type == 'movies':
-        entry_type = entry_type[:-1]
+        db_type = entry_type[:-1]
         title = 'Movies'
     elif entry_type == 'tvshows':
-        entry_type = 'series'
+        db_type = 'series'
         title = 'TV Shows'
     else:
         # If someone trys a malformed URL, send to 404 page
         abort(404)
 
     # Get skip argument from URL
-    skip = request.args.get('skip') or 0
+    skip = int(request.args.get('skip')) if request.args.get('skip') is not None else 0 
 
     # Retrieve entries from database
-    entries_count = favs.count_documents({'Type': entry_type}, skip)
-    entries = favs.find({'Type': entry_type}).sort('Votes', pymongo.DESCENDING).skip(skip).limit(6)
-    return render_template('view-all.html', title=title, entries=entries)
+    entries_count = favs.count_documents({'Type': db_type}, skip=skip)
+    entries = favs.find({'Type': db_type}).sort('Votes', pymongo.DESCENDING).skip(skip).limit(6)
+    return render_template('view-all.html', title=title, entries=entries, entry_type=entry_type, entries_count=entries_count, skip=skip)
 
 # Error handler for entire app if page not found
 @main_bp.app_errorhandler(404)

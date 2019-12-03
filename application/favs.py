@@ -26,24 +26,26 @@ def add_favourite():
         OMDB_KEY = os.getenv('OMDB_KEY')
         url = f'http://www.omdbapi.com/?apikey={OMDB_KEY}&t={request.form["entry_name"]}&type={request.form["entry_type"]}'
         entry_details = requests.get(url).json()
+        try:
+            # Check if title with this name already exists, flash message if it does
+            if not favs.count_documents({'Title': entry_details["Title"]}, limit=1):
+                trailer = youtube_search(entry_details["Title"] + ' trailer')
+                entry_details.update({'Reason': request.form.get(
+                    'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1, 'Trailer': trailer})
 
-        # Check if title with this name already exists, flash message if it does
-        if not favs.count_documents({'Title': entry_details["Title"]}, limit=1):
-            trailer = youtube_search(entry_details["Title"] + ' trailer')
-            entry_details.update({'Reason': request.form.get(
-                'reason'), 'AddedBy': request.form.get('username'), 'Votes': 1, 'Trailer': trailer})
-
-            # Try insert to DB, flash error message on fail, flash and redirect on success
-            try:
-                favs.insert_one(entry_details)
-            except:
-                flash('Something went wrong! Please try again')
+                # Try insert to DB, flash error message on fail, flash and redirect on success
+                try:
+                    favs.insert_one(entry_details)
+                except:
+                    flash('Something went wrong! Please try again')
+                else:
+                    flash("Favourite saved!")
+                    return redirect(url_for('main_bp.home'))
             else:
-                flash("Favourite saved!")
-                return redirect(url_for('main_bp.home'))
-        else:
-            flash('Someone already added that one!')
-            return redirect(url_for('favs_bp.add_favourite'))
+                flash('Someone already added that one!')
+                return redirect(url_for('favs_bp.add_favourite'))
+        except:
+            flash('No listing with that title found, please try again!')
             
     return render_template('add-fav.html', title='Add Favourite', form=entry_form)
 
