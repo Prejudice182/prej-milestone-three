@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {% block content %}
-<h1>Edit Favourite</h1>
+<h4>Edit Favourite</h4>
 <div class="formwrapper">
     <form action="{{ url_for('favs_bp.edit_fav', entry_id=entry._id) }}" method="POST">
         <div class="username input-field">
@@ -16,8 +16,10 @@
             <ul class="errors">{%  for error in form.reason.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
-        <div class="submitbutton">
-            <input id="submit" type="submit" value="Submit">
+        <div class="submitbutton center-align">
+            <button type="submit" class="btn waves-effect waves-light" name="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
         </div>
         {{ form.hidden_tag() }}
     </form>

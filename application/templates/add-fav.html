@@ -1,35 +1,37 @@
 {% extends 'base.html'%}
 {% block content %}
-<h1>Add Favourite</h1>
+<h4>Add Favourite</h4>
 <div class="formwrapper">
-    <form action="{{ url_for('favs_bp.add_favourite') }}" method="POST">
-        <div class="entry-name input-field">
+    <form action="{{ url_for('favs_bp.add_fav') }}" method="POST">
+        <div class="input-field">
             {{ form.entry_name(placeholder='Avengers: Endgame') }} {{ form.entry_name.label }}
             {% if form.entry_name.errors %}
             <ul class="errors">{%  for error in form.entry_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
-        <div class="entry-type input-field">
+        <div class="input-field">
             {{ form.entry_type }} {{ form.entry_type.label }}
             {% if form.entry_type.errors %}
             <ul class="errors">{%  for error in form.entry_type.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
-        <div class="username input-field">
+        <div class="input-field">
             {{ form.username(placeholder='Joe Bloggs') }} {{ form.username.label }}
             {% if form.username.errors %}
             <ul class="errors">{%  for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
-        <div class="reason input-field">
+        <div class="input-field">
             {{ form.reason(placeholder='The coming together of all of Marvel\'s greatest superheroes', class_='materialize-textarea') }} {{ form.reason.label }}
             {% if form.reason.errors %}
             <ul class="errors">{%  for error in form.reason.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
         
-        <div class="submitbutton">
-            <input id="submit" type="submit" value="Submit">
+        <div class="submitbutton center-align">
+            <button type="submit" class="btn waves-effect waves-light" name="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
         </div>
         {{ form.hidden_tag() }}
     </form>

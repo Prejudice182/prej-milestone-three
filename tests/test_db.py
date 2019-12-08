@@ -15,7 +15,7 @@ class DBTests(unittest.TestCase):
         pass
 
     def addFav(self, entry, eType, name, reason):
-        return self.client.post('/add-favourite', data=dict(entry_name=entry, entry_type=eType, username=name, reason=reason), follow_redirects=True)
+        return self.client.post('/add-fav', data=dict(entry_name=entry, entry_type=eType, username=name, reason=reason), follow_redirects=True)
 
     def delFav(self, entry_id):
         return self.client.post(f'/delete-fav/{entry_id}', follow_redirects=True)

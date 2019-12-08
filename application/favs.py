@@ -15,8 +15,8 @@ favs_bp = Blueprint('favs_bp', __name__,
 favs = mongo.db.favourites
 
 # Add Favourite route
-@favs_bp.route('/add-favourite', methods=['GET', 'POST'])
-def add_favourite():
+@favs_bp.route('/add-fav', methods=['GET', 'POST'])
+def add_fav():
     # Create form with EntryForm class
     entry_form = EntryForm()
 
@@ -43,7 +43,7 @@ def add_favourite():
                     return redirect(url_for('main_bp.home'))
             else:
                 flash('Someone already added that one!')
-                return redirect(url_for('favs_bp.add_favourite'))
+                return redirect(url_for('favs_bp.add_fav'))
         except:
             flash('No listing with that title found, please try again!')
             

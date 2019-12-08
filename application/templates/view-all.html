@@ -1,10 +1,10 @@
 {% extends 'base.html'%}
 {% macro render_card(entry) -%}
-<div class="col m4">
+<div class="col l6 xl4">
     <div class="card large">
         <div class="card-image">
             <div id="card-img">
-                <img class="responsive-img" src="{{ entry.Poster }}" alt="{{ entry.Title }}">
+                <img class="responsive-img" src="{{ entry.Poster }}" alt="Poster for {{ entry.Title }}">
             </div>
             <span class="card-title">{{ entry.Title }}</span>
         </div>
@@ -36,18 +36,20 @@
 </div>
 {%- endmacro %}
 {% block content %}
-<h1>View All {{ title }}</h1>
+<h4>View All {{ title }}</h4>
 <div class="row flex">
     {% for entry in entries %}
     {% call render_card(entry) %} {% endcall %}
     {% else %}
-    <h4>No {{ title }}s found!</h4>
+    <h5>No {{ title }}s found!</h5>
     {% endfor %}
 </div>
-{% if entries_count > 6 %}
-<a href="{{ url_for('main_bp.view_all', entry_type=entry_type, skip=skip+6) }}">Next</a>
-{% endif %}
+<div class="pagination center-align">
 {% if entries_count < 6 and skip > 0 %}
-<a href="{{ url_for('main_bp.view_all', entry_type=entry_type, skip=skip-6) }}">Prev</a>
+    <a href="{{ url_for('main_bp.view_all', entry_type=entry_type, skip=skip-6) }}" class="waves-effect waves-light btn"><i class="material-icons">chevron_left</i>Prev</a>
 {% endif %}
+{% if entries_count > 6 %}
+    <a href="{{ url_for('main_bp.view_all', entry_type=entry_type, skip=skip+6) }}" class="waves-effect waves-light btn">Next<i class="material-icons">chevron_right</i></a>
+{% endif %}
+</div>
 {% endblock %}

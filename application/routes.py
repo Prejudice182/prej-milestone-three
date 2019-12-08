@@ -36,7 +36,13 @@ def view_all(entry_type):
         abort(404)
 
     # Get skip argument from URL
-    skip = int(request.args.get('skip')) if request.args.get('skip') is not None else 0 
+    if request.args.get('skip') is not None:
+        # Change skip from str to int if its a number, else 0
+        skip = int(request.args.get('skip')) if request.args.get('skip').isnumeric() else 0
+        # Check if skip has been set to negative by malicious actor
+        skip = 0 if skip < 0 else skip
+    else:
+        skip = 0
 
     # Retrieve entries from database
     entries_count = favs.count_documents({'Type': db_type}, skip=skip)
