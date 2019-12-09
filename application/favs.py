@@ -46,17 +46,24 @@ def add_fav():
                 return redirect(url_for('favs_bp.add_fav'))
         except:
             flash('No listing with that title found, please try again!')
-            
+
     return render_template('add-fav.html', title='Add Favourite', form=entry_form)
 
 
 @favs_bp.route('/edit-fav/<entry_id>', methods=['GET', 'POST'])
 def edit_fav(entry_id):
+    # Retrieve correct entry from DB
     entry = favs.find_one({'_id': ObjectId(entry_id)},
                           {'Type': 1, 'Reason': 1, 'AddedBy': 1})
+
     if entry is not None:
+        # Set entry_type for redirect back
         entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
+
+        # Create from from EditForm class
         edit_form = EditForm()
+
+        # Check for valid form on submit, try update db, and flash/redirect on success or fail
         if edit_form.validate_on_submit():
             try:
                 favs.update_one({'_id': ObjectId(entry_id)}, {
@@ -77,7 +84,10 @@ def edit_fav(entry_id):
 
 @favs_bp.route('/delete-fav/<entry_id>', methods=['POST'])
 def delete_fav(entry_id):
-    entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Type': 1})
+    # Retrieve correct entry from DB
+    entry = favs.find_one({'_id': ObjectId(entry_id)})
+
+    # Try to delete entry from DB, flash/redirect on success or fail
     if entry is not None:
         try:
             favs.delete_one({'_id': ObjectId(entry_id)})
@@ -92,9 +102,12 @@ def delete_fav(entry_id):
 
 @favs_bp.route('/view-fav/<entry_id>', methods=['GET'])
 def view_fav(entry_id):
+    # Set the required fields from our entry and retrive it
     req_fields = {'_id': 1, 'Title': 1, 'Rated': 1, 'Released': 1, 'Runtime': 1, 'Genre': 1, 'Director': 1, 'Actors': 1,
                   'Plot': 1, 'Poster': 1, 'imdbRating': 1, 'imdbID': 1, 'Reason': 1, 'AddedBy': 1, 'Votes': 1, 'Type': 1, 'Trailer': 1}
     entry = favs.find_one({'_id': ObjectId(entry_id)}, req_fields)
+
+    # Send data to template
     if entry is not None:
         entry_type = 'movies' if entry['Type'] == 'movie' else 'tvshows'
         return render_template('view-fav.html', title='View Favourite', entry=entry, entry_type=entry_type)
@@ -104,14 +117,19 @@ def view_fav(entry_id):
 
 @favs_bp.route('/vote-<direction>/<entry_id>', methods=['GET'])
 def vote(direction, entry_id):
+    # Retrieve correct entry from DB
     entry = favs.find_one({'_id': ObjectId(entry_id)}, {'Votes': 1})
+
     if entry is not None:
+        # Determine which direction the vote is for
         if direction == 'up':
             votes = entry['Votes'] + 1
         elif direction == 'down':
             votes = entry['Votes'] - 1
         else:
             abort(404)
+
+        # Try and update vote count, flash and redirect back to referring page
         try:
             favs.update_one({'_id': ObjectId(entry_id)}, {
                 '$set': {

@@ -55,7 +55,7 @@ class EntryForm(FlaskForm):
     reason = TextAreaField('Reason', [InputRequired()])
     submit = SubmitField('Add Favourite')
 
-
+# Define our EditForm class, inheriting from FlaskForm
 class EditForm(FlaskForm):
     username = StringField('Your Name', [InputRequired()])
     reason = TextAreaField('Reason', [InputRequired()])

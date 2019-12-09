@@ -20,16 +20,16 @@
         </div>
         <div class="modal" id="deleteModal{{ entry._id }}">
             <div class="modal-content">
-                <h4>Are you sure you want to delete:</h4>
+                <h5>Are you sure you want to delete:</h5>
                 <p>Title: {{ entry.Title }}</p>
                 <p>Added By: {{ entry.AddedBy }}</p>
                 <p>Reason: {{ entry.Reason }}</p>
             </div>
             <div class="modal-footer">
                 <form action="{{ url_for('favs_bp.delete_fav', entry_id=entry._id) }}" method="post">
-                    <input type="submit" value="DELETE">
+                    <button class="btn waves-effect waves-light" type="submit" name="delete">Delete <i class="material-icons">delete</i></button>
+                    <a href="#!" class="modal-close btn waves-effect waves-light">Cancel <i class="material-icons">cancel</i></a>
                 </form>
-                <a href="#!" class="modal-close">CANCEL</a>
             </div>
         </div>
     </div>

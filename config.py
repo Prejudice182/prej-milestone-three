@@ -15,6 +15,7 @@ class Config:
     
 
 class TestConfig(Config):
+    '''Set Flask config to test environment settings'''
     TESTING = True
     FLASK_DEBUG = False
     MONGO_URI = os.getenv('TESTS_MONGO_URI')

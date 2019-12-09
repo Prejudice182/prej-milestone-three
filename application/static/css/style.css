@@ -68,8 +68,6 @@ nav {
     background: #897778;
 }
 
-
-
 .details .row {
     margin: 10px 5px;
 }
@@ -100,7 +98,8 @@ a:not(.sidenav-trigger)>.material-icons,
 .input-field input[type^="text"],
 .materialize-textarea,
 .links>a,
-.pagination i.material-icons {
+.pagination i.material-icons,
+.modal-footer a i.material-icons {
     color: #f3f3ee;
 }
 
@@ -108,16 +107,22 @@ a:not(.sidenav-trigger)>.material-icons,
     --color: 151, 104, 107;
 }
 
-.submitbutton button, .pagination .btn {
+.submitbutton button,
+.pagination .btn,
+.modal-footer .btn {
     color: #f3f3ee;
     background: rgba(var(--color));
 }
 
-.submitbutton button:hover, .pagination .btn:hover {
+.submitbutton button:hover,
+.pagination .btn:hover,
+.modal-footer .btn:hover {
     background: rgba(var(--color), 0.7);
 }
 
-.pagination > a {
+.pagination>a,
+.modal-footer button,
+.modal-footer a {
     display: inline-flex;
     vertical-align: middle;
 }

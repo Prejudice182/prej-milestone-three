@@ -9,6 +9,7 @@ mongo = PyMongo()
 # Load environment variables from file
 load_dotenv()
 
+# App Factory
 def create_app(test_config=None):
     ''' Initialize core application '''
     app = Flask(__name__, instance_relative_config=False)
