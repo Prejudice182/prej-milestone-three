@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% for message in get_flashed_messages() %}
+    <meta id="messages" data-message="{{ message }}">
+    {% endfor %}
 </head>
 
 <body>
@@ -50,9 +53,9 @@
                 $(e.currentTarget).parents(".input-field").find("label").css("color", "#9e9e9e")
             });
         });
-        {% for message in get_flashed_messages() %}
-            M.toast({ html: "{{ message }}" })
-        {% endfor %}
+        M.toast({
+            html: $("#messages").data("message")
+        })
     </script>
 </body>
 

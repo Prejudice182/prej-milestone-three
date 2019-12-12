@@ -3,25 +3,28 @@
 <div class="col l6 xl4">
     <div class="card large">
         <div class="card-image">
-            <div id="card-img">
+            <div class="card-img">
                 <img class="responsive-img" src="{{ entry.Poster }}" alt="Poster for {{ entry.Title }}">
             </div>
-            <span class="card-title"><a href="{{ url_for('favs_bp.view_fav', entry_id=entry._id) }}">{{ entry.Title }}</a></span>
+            <span class="card-title"><a
+                    href="{{ url_for('favs_bp.view_fav', entry_id=entry._id) }}">{{ entry.Title }}</a></span>
         </div>
         <div class="card-content">
             <p>{{ entry.Plot }}</p>{{ caller() }}
         </div>
-        <div class="card-action center-align" id="card-buttons">
-            <a href="{{ url_for('favs_bp.vote', direction='down', entry_id=entry._id) }}" class="left"><i class="material-icons">thumb_down</i></a>
+        <div class="card-action center-align card-buttons">
+            <a href="{{ url_for('favs_bp.vote', direction='down', entry_id=entry._id) }}"><i
+                    class="material-icons">thumb_down</i></a>
             {{ entry.Votes }}
-            <a href="{{ url_for('favs_bp.vote', direction='up', entry_id=entry._id) }}" class="right"><i class="material-icons">thumb_up</i></a>
+            <a href="{{ url_for('favs_bp.vote', direction='up', entry_id=entry._id) }}"><i
+                    class="material-icons">thumb_up</i></a>
         </div>
     </div>
 </div>
 {%- endmacro %}
 {% block content %}
 <h4 class="center-align">Top Movies</h4>
-<div class="row flex">
+<div id="movies" class="row flex">
     {% for movie in movies %}
     {% call render_card(movie) %} {% endcall %}
     {% else %}
@@ -29,7 +32,7 @@
     {% endfor %}
 </div>
 <h4 class="center-align">Top TV Shows</h4>
-<div class="row flex">
+<div id="tvshows" class="row flex">
     {% for show in tvshows %}
     {% call render_card(show) %} {% endcall %}
     {% else %}

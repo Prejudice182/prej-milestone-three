@@ -22,12 +22,13 @@
             {% endif %}
         </div>
         <div class="input-field">
-            {{ form.reason(placeholder='The coming together of all of Marvel\'s greatest superheroes', class_='materialize-textarea') }} {{ form.reason.label }}
+            {{ form.reason(placeholder='The coming together of all of Marvel\'s greatest superheroes', class_='materialize-textarea') }}
+            {{ form.reason.label }}
             {% if form.reason.errors %}
             <ul class="errors">{%  for error in form.reason.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
         </div>
-        
+
         <div class="submitbutton center-align">
             <button type="submit" class="btn waves-effect waves-light" name="submit">Submit
                 <i class="material-icons right">send</i>

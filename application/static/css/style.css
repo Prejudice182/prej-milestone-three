@@ -13,14 +13,17 @@ nav {
     justify-content: space-evenly;
 }
 
-#card-buttons {
+.card .card-buttons {
     padding: 10px 20px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: center;
 }
 
-#card-buttons a {
+#entries .card .card-buttons a,
+#movies .card .card-buttons a,
+#tvshows .card .card-buttons a {
     margin-right: 0;
 }
 
@@ -38,7 +41,7 @@ nav {
     color: #f3f3ee;
 }
 
-#card-img::after {
+.card-img::after {
     content: '';
     position: absolute;
     left: 0;
@@ -91,7 +94,7 @@ input.select-dropdown.dropdown-trigger:focus+label,
 .dropdown-content li>span,
 #mobile-collapse>li>a,
 a:not(.sidenav-trigger)>.material-icons,
-#card-buttons>a {
+#entries .card .card-buttons a{
     color: #97686B;
 }
 
@@ -125,4 +128,12 @@ a:not(.sidenav-trigger)>.material-icons,
 .modal-footer a {
     display: inline-flex;
     vertical-align: middle;
+}
+
+.pagination>a {
+    margin-bottom: 20px;
+}
+
+iframe {
+    border: 0;
 }
