@@ -137,3 +137,8 @@ a:not(.sidenav-trigger)>.material-icons,
 iframe {
     border: 0;
 }
+
+.brand-logo>img{
+    margin: 10px 0 0 25px;
+    height:45px;
+}

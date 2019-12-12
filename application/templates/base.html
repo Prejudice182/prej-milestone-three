@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-16x16.png') }}" sizes="16x16" />
     {% for message in get_flashed_messages() %}
     <meta id="messages" data-message="{{ message }}">
     {% endfor %}
@@ -17,7 +19,7 @@
 <body>
     <nav>
         <div class="nav-wrapper">
-            <a href="{{ url_for('main_bp.home') }}" class="brand-logo">Tube Ratings</a>
+            <a href="{{ url_for('main_bp.home') }}" class="brand-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Tube Ratings"></a>
             <a href="#" data-target="mobile-collapse" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="{{ url_for('main_bp.home') }}">Home</a></li>
