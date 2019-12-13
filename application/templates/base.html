@@ -13,8 +13,10 @@
     <!-- Own styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-32x32.png') }}" sizes="32x32" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-16x16.png') }}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-32x32.png') }}"
+        sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-16x16.png') }}"
+        sizes="16x16" />
     <!-- Meta tag to store flashed messages -->
     {% for message in get_flashed_messages() %}
     <meta id="messages" data-message="{{ message }}">
@@ -25,7 +27,8 @@
     <!-- Nav Bar (Desktop)-->
     <nav>
         <div class="nav-wrapper">
-            <a href="{{ url_for('main_bp.home') }}" class="brand-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Tube Ratings"></a>
+            <a href="{{ url_for('main_bp.home') }}" class="brand-logo"><img
+                    src="{{ url_for('static', filename='images/logo.png') }}" alt="Tube Ratings"></a>
             <a href="#" data-target="mobile-collapse" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="{{ url_for('main_bp.home') }}">Home</a></li>
@@ -63,10 +66,12 @@
             $("input.select-dropdown").on("focusout", (e) => {
                 $(e.currentTarget).parents(".input-field").find("label").css("color", "#9e9e9e")
             });
+            if ($("#messages").length) {
+                M.toast({
+                    html: $("#messages").data("message")
+                })
+            }
         });
-        M.toast({
-            html: $("#messages").data("message")
-        })
     </script>
 </body>
 
