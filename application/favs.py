@@ -45,7 +45,7 @@ def add_fav():
                     flash('Something went wrong! Please try again')
                 else:
                     flash("Favourite saved!")
-                    return redirect(url_for('main_bp.home'))
+                    return redirect(url_for('main_bp.view_all', entry_type=request.form.get('entry_type')))
             else:
                 flash('Someone already added that one!')
                 return redirect(url_for('favs_bp.add_fav'))

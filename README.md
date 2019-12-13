@@ -2,7 +2,7 @@
 
 Milestone Project Three: Data Centric Development - Code Institute
 
-I made this page as my submission for my third milestone project for Code Institute's diploma in software development. This site lets users vote for their favourite TV shows and movies, and see what other people think as well.
+This site lets users vote for their favourite TV shows and movies, and see what other people think as well. As I currently work in a cinema, I have a huge affinity for movies and tv shows, and would like to gauge other peoples opinions on these.
 
 A live version can be found on [Heroku](https://tuberatings.herokuapp.com/).
 
@@ -33,7 +33,10 @@ I tested for responsiveness using the site, [Am I Responsive?](http://ami.respon
 ### Existing Features
 
 - Cards - gives a quick glimpse at the poster and synopsis for the entry
-- Links - lets users browse on to imdB, the largest movie and TV database
+- Voting - lets users vote up or down their favourite entries
+- Edit - Users can change why an entry is included in the list
+- View All - Allows users to browse through all entries in a category
+- Delete - Remove an entry from the listing, if you don't think it should be there
 - Modals - provide a warning before deleting an entry
 - Forms - used to input info about an entry
 
@@ -63,17 +66,17 @@ I tested for responsiveness using the site, [Am I Responsive?](http://ami.respon
 
 ## Testing
 
-### Validation
+- Validation
 
-The code was ran through the HTML and CSS validators provided by the W3C, available [here](https://validator.w3.org/). IDs were added to certain elements, to get around some of Materialize's high specificity selectors. All code came back with no issues from the validators.
+  - The code was ran through the HTML and CSS validators provided by the W3C, available [here](https://validator.w3.org/). IDs were added to certain elements, to get around some of Materialize's high specificity selectors. All code came back with no issues from the validators.
 
-### Unit Tests
+- Unit Tests
 
-I wrote some unit tests using Flasks built in testing suite. I added 2 tests for each of my views, one valid test, designed to pass, and one invalid test, designed to throw an error and be caught by the view. All tests passed successfully. As I added new code, I followed test driven development, and wrote a test first, then made the function as basic as possible to fail on first run. I proceeded to write code to make the test pass.
+  - I wrote some unit tests using Flasks built in testing suite. I added 2 tests for each of my views, one valid test, designed to pass, and one invalid test, designed to throw an error and be caught by the view. All tests passed successfully. As I added new code, I followed test driven development, and wrote a test first, then made the function as basic as possible to fail on first run. I proceeded to write code to make the test pass.
 
-### Visual Testing
+- Visual Testing
 
-While developing, I loaded the site in Firefox mainly, while also checking Chrome on desktop, and Safari on mobile, to ensure the most used browsers could use the site without any issues.
+  - While developing, I loaded the site in Firefox mainly, while also checking Chrome on desktop, and Safari on mobile, to ensure the most used browsers could use the site without any issues.
 
 ## Deployment
 

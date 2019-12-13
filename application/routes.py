@@ -2,7 +2,6 @@
 from flask import Blueprint, render_template, abort, request, send_from_directory
 import os
 from . import mongo
-from flask_pymongo import pymongo
 from flask import current_app as app
 
 # Define main blueprint
@@ -15,10 +14,8 @@ favs = mongo.db.favourites
 @main_bp.route('/', methods=['GET'])
 def home():
     # Fetch entries from database
-    movies = favs.find({'Type': 'movie'}).sort(
-        'Votes', pymongo.DESCENDING).limit(3)
-    tvshows = favs.find({'Type': 'series'}).sort(
-        'Votes', pymongo.DESCENDING).limit(3)
+    movies = favs.find({'Type': 'movie'}).sort([('Votes', -1)]).limit(3)
+    tvshows = favs.find({'Type': 'series'}).sort([('Votes', -1)]).limit(3)
 
     return render_template('index.html', title="Home", movies=movies, tvshows=tvshows)
 
@@ -26,10 +23,10 @@ def home():
 @main_bp.route('/view-all/<entry_type>', methods=['GET'])
 def view_all(entry_type):
     # Get correct collection name for database
-    if entry_type == 'movies':
-        db_type = entry_type[:-1]
+    if entry_type in ['movies', 'movie']:
+        db_type = 'movie'
         title = 'Movies'
-    elif entry_type == 'tvshows':
+    elif entry_type in ['tvshows', 'series']:
         db_type = 'series'
         title = 'TV Shows'
     else:
@@ -49,7 +46,7 @@ def view_all(entry_type):
     # Retrieve entries from database
     entries_count = favs.count_documents({'Type': db_type}, skip=skip)
     entries = favs.find({'Type': db_type}).sort(
-        'Votes', pymongo.DESCENDING).skip(skip).limit(6)
+        [('_id', -1)]).skip(skip).limit(6)
     return render_template('view-all.html', title=title, entries=entries, entry_type=entry_type, entries_count=entries_count, skip=skip)
 
 # Error handler for entire app if page not found
