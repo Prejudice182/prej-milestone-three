@@ -1,6 +1,7 @@
 {% extends 'base.html'%}
 {% block content %}
 <h4>Edit Favourite</h4>
+<!-- Form for editing favourite-->
 <div class="formwrapper">
     <form action="{{ url_for('favs_bp.edit_fav', entry_id=entry._id) }}" method="POST">
         <div class="username input-field">

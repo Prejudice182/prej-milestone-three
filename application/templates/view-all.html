@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% macro render_card(entry) -%}
+<!-- Macro generated card to display entry -->
 <div class="col l6 xl4">
     <div class="card large">
         <div class="card-image">
@@ -21,6 +22,7 @@
             <a href="{{ url_for('favs_bp.vote', direction='up', entry_id=entry._id) }}"><i
                     class="material-icons">thumb_up</i></a>
         </div>
+        <!-- Modal for deletion confirmation -->
         <div class="modal" id="deleteModal{{ entry._id }}">
             <div class="modal-content">
                 <h5>Are you sure you want to delete:</h5>
@@ -42,6 +44,7 @@
 {%- endmacro %}
 {% block content %}
 <h4>View All {{ title }}</h4>
+<!-- Main entries section -->
 <div class="row flex" id="entries">
     {% for entry in entries %}
     {% call render_card(entry) %} {% endcall %}
@@ -49,6 +52,7 @@
     <h5>No {{ title }}s found!</h5>
     {% endfor %}
 </div>
+<!-- If more than 6 entries, display pagination section -->
 <div class="pagination center-align">
     {% if entries_count < 6 and skip > 0 %}
     <a href="{{ url_for('main_bp.view_all', entry_type=entry_type, skip=skip-6) }}"

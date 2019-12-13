@@ -6,17 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tube Ratings - {{ title }}</title>
+    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Materialize CSS Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Own styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Favicons -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-32x32.png') }}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-16x16.png') }}" sizes="16x16" />
+    <!-- Meta tag to store flashed messages -->
     {% for message in get_flashed_messages() %}
     <meta id="messages" data-message="{{ message }}">
     {% endfor %}
 </head>
 
 <body>
+    <!-- Nav Bar (Desktop)-->
     <nav>
         <div class="nav-wrapper">
             <a href="{{ url_for('main_bp.home') }}" class="brand-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Tube Ratings"></a>
@@ -29,20 +35,23 @@
             </ul>
         </div>
     </nav>
-
+    <!-- Collapsable Nav for mobile devices -->
     <ul class="sidenav" id="mobile-collapse">
         <li><a href="{{ url_for('main_bp.home') }}">Home</a></li>
         <li><a href="{{ url_for('main_bp.view_all', entry_type='movies') }}">Movies</a></li>
         <li><a href="{{ url_for('main_bp.view_all', entry_type='tvshows') }}">TV Shows</a></li>
         <li><a href="{{ url_for('favs_bp.add_fav')}}">Add Favourite</a></li>
     </ul>
-
+    <!-- Main content container -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    <!-- JQuery Library -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- Materialize JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Inline JS to initialize Materialize components -->
     <script>
         $(document).ready(() => {
             $(".sidenav").sidenav();

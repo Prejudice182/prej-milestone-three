@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% macro render_card(entry) -%}
+<!-- Macro generated card to display entry -->
 <div class="col l6 xl4">
     <div class="card large">
         <div class="card-image">
@@ -23,6 +24,7 @@
 </div>
 {%- endmacro %}
 {% block content %}
+<!-- Movies section -->
 <h4 class="center-align">Top Movies</h4>
 <div id="movies" class="row flex">
     {% for movie in movies %}
@@ -31,6 +33,7 @@
     <h5>No movies found!</h5>
     {% endfor %}
 </div>
+<!-- TV Shows Section -->
 <h4 class="center-align">Top TV Shows</h4>
 <div id="tvshows" class="row flex">
     {% for show in tvshows %}
