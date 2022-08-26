@@ -2,7 +2,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, validators
 from wtforms.validators import InputRequired
-from wtforms.widgets import Select, html_params, HTMLString
+from wtforms.widgets import Select, html_params
+from markupsafe import Markup
 
 # Code below taken from https://stackoverflow.com/questions/23460857/create-selectfield-options-with-custom-attributes-in-wtforms
 
@@ -25,7 +26,7 @@ class AttribSelect(Select):
             html.append(self.render_option(
                 val, label, selected, **html_attribs))
         html.append('</select>')
-        return HTMLString(''.join(html))
+        return Markup(''.join(html))
 
 
 class AttribSelectField(SelectField):
