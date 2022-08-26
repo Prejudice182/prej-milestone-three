@@ -9,7 +9,7 @@ dnspython
 Flask
 Flask-PyMongo
 Flask-WTF
-google-api-python-client1
+google-api-python-client
 google-auth
 google-auth-httplib2
 httplib2
