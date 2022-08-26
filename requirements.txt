@@ -14,7 +14,7 @@ google-auth
 google-auth-httplib2
 httplib2
 idna
-isort1
+isort
 itsdangerous
 Jinja2
 lazy-object-proxy
